@@ -1,0 +1,112 @@
+{autoflow
+	{metaclassname "NetNodeEntry"}
+	{blockstring "nodedata"}
+	{ilbmtag "NODE"}
+	{classname "CNodeDataIO" }
+	{headerfile "netnodeentryio.h" }
+	{sourcefile "netnodeentryio.cpp" }
+
+        {listmetaclassname "NetNodeEntryList"}
+        {listentryclassname "CNetworkNode"}
+        {listentrykeyword "nodedata"}
+        {listpointerlevel 1 }
+        {listblockstring "nodelist" }
+:
+	{autosettings
+		{firsttoken 0x1001 }
+		{debugmode  0 }
+		{verbosemode 1 }
+		{novars 0}
+		{noascii 1}
+		{stdafxmode 1 }
+		{usegetsetters 0 }
+		{usechangeflags 0 }
+		{uselocalreadvars 0 }
+		{uselocalreadfuncs 0 }
+		{uselocalwritefuncs 0 }
+		{usestringmacros 0 }
+		{useasciidata 1 }
+		{usebinarydata 0 }
+	}
+	{includelist
+		{listnum 1}
+		{listdata
+			{include "\"fractals.h\""}
+		}
+	}
+	{entrylist
+		{listnum 9}
+		{listdata
+			{type "string"}
+			{member "m_hostname"}
+			{keyword "hostname"}
+			{writeout 1 }
+			{comment "Hostname"}
+			{gotflag 0 }
+		}
+		{listdata
+			{type "integer"}
+			{member "m_port"}
+			{keyword "port"}
+			{writeout 1 }
+			{comment "Port"}
+			{gotflag 0 }
+		}
+		{listdata
+			{type "integer"}
+			{member "m_windowid"}
+			{keyword "windowid"}
+			{writeout 1 }
+			{comment "Window ID"}
+			{gotflag 0 }
+		}
+		{listdata
+			{type "float"}
+			{member "m_offx"}
+			{keyword "offx"}
+			{writeout 1 }
+			{comment "Offset in X"}
+			{gotflag 0 }
+		}
+		{listdata
+			{type "float"}
+			{member "m_offy"}
+			{keyword "offy"}
+			{writeout 1 }
+			{comment "Offset in Y"}
+			{gotflag 0 }
+		}
+		{listdata
+			{type "float"}
+			{member "m_width"}
+			{keyword "width"}
+			{writeout 1 }
+			{comment "Width"}
+			{gotflag 0 }
+		}
+		{listdata
+			{type "float"}
+			{member "m_height"}
+			{keyword "height"}
+			{writeout 1 }
+			{comment "Height"}
+			{gotflag 0 }
+		}
+		{listdata
+			{type "float"}
+			{member "m_offheading"}
+			{keyword "offheading"}
+			{writeout 1 }
+			{comment "Offset in Heading"}
+			{gotflag 0 }
+		}
+		{listdata
+			{type "float"}
+			{member "m_aspect"}
+			{keyword "aspect"}
+			{writeout 1 }
+			{comment "Aspect ratio for calculations"}
+			{gotflag 0 }
+		}
+	}
+}

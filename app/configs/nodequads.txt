@@ -1,0 +1,46 @@
+{nodelist
+        {nodedata
+                {hostname "127.0.0.1"}
+                {port 8082}
+                {windowid 0}
+                {offx -0.25 }
+                {offy  0.25 }
+                {width 0.5}
+                {height 0.5}
+                {offheading 0.0}
+		{aspect 1.777}
+        }
+        {nodedata
+                {hostname "127.0.0.1"}
+                {port 8080}
+                {windowid 0}
+                {offx -0.25 }
+                {offy -0.25 }
+                {width 0.5}
+                {height 0.5}
+                {offheading 0.0}
+		{aspect 1.777}
+        }
+        {nodedata
+                {hostname "127.0.0.1"}
+                {port 8083}
+                {windowid 0}
+                {offx  0.25 }
+                {offy  0.25 }
+                {width 0.5}
+                {height 0.5}
+                {offheading 0.0}
+		{aspect 1.777}
+        }
+        {nodedata
+                {hostname "127.0.0.1"}
+                {port 8081}
+                {windowid 0}
+                {offx  0.25 }
+                {offy -0.25 }
+                {width 0.5}
+                {height 0.5}
+                {offheading 0.0}
+		{aspect 1.777}
+        }
+}

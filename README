@@ -1,0 +1,134 @@
+Mandelbrot Explorer using Compute Shaders
+by Dr. Michael Robb - 7th July 2015
+Contact: msar@vfxresearch.com
+==================================================================
+
+Introduction
+------------
+
+The enclosed software within this package demonstrates how it is possible
+to make use of compute shaders to accelerate the calculation of the 
+Mandelbrot set to the point of real-time rendering at full-screen resolution
+even when all sorts of advanced rendering techniques such as smooth
+shading are in use.
+
+Build instructions
+------------------
+
+In the directory "app", type the command:
+
+	make all
+
+This will compile all code in subdirectories follow by the application itself.
+
+Running instructions
+--------------------
+
+Enter the directory "app" and there should be an executable called "compute".
+Information about the command line options can be found using:
+
+	./compute --
+
+Full screen mode is activated using: 
+
+	./compute -u
+
+It is possible to create a window without any borders using:
+
+	./compute -b
+
+The size of the texture used to sample the Mandlebrot set can be specified
+using:
+
+	./compute -t1024x1024
+
+It is possible to implement basic anti-aliasing by selecting a texture size
+larger than the window size.
+
+The size of the window can be specified using:
+
+	./compute -w1600x1200
+
+
+A window or fullscreen mode viewer can be placed into the network server
+mode with the following command:
+
+	./compute -s -p<port number>
+
+The application will then go into server mode and wait for command messages
+
+Similarly, a window or fullscreen mode viewer can be placed into the 
+network client mode with the following command:
+	
+	./compute -c -n<networkconfigfile>
+
+Sample configurations are in the directory "configs"
+
+	Four examples are provided:
+
+	localpair - a 2x1 display
+
+		+-----+-----+
+		|     |     |
+		+-----+-----+
+
+	localquads - a 2x2 quad display
+
+		+-----+-----+
+		|     |     |
+		+-----+-----+
+		|     |     |
+		+-----+-----+
+
+	localhex   - a 7 unit hexagonal display
+
+		+-----+-----+
+                |     |     |
+ 	     +--+--+--+--+--+--+
+	     |     |     |     |
+ 	     +--+--+--+--+--+--+
+                |     |     |
+		+-----+-----+
+
+	localwindill - a 4 unit display in the shape of windmill 
+
+	     +---+
+             |   |
+             |   +-------+ 
+             |   |       |
+        +----+---+---+---+	
+        |        |   |
+	+--------+   |
+                 |   |
+                 +---+
+
+	Each of these is specified in the local configuration files:
+
+	localhex.sh    nodehex.txt
+	localpair.sh   nodepair.txt
+	localquads.sh  nodequads.txt
+	localtables.sh nodetablet.txt
+	localwindmill.sh nodewindmill.txt	
+	
+	These examples can be run by going into the config directory
+	and running the selected script.
+
+Layout
+------
+
+The enclosed software is split up into the following units:
+
+	app         - The basic windowed application
+	app/configs - Example network configurations
+	mathslib    - Basic matrix/vector classes
+	texlib      - Basic texture image file loading/saving routines
+
+	gpl.txt     - GNU public license
+
+
+Author: Dr. Michael S. A. Robb
+        msar@vfxresearch.com
+
+=============================================================================
+  =========================================================================
+

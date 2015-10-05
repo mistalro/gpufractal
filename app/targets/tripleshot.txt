@@ -1,0 +1,22 @@
+{fractal
+	{escaperadius 4 }
+	{xcen -0.105825 }
+	{ycen -0.8374 }
+	{xwidth 9.56197e-05 }
+	{ywidth 5.37861e-05 }
+	{maxiter 1024 }
+	{angle 0.209439 }
+	{power 2 }
+	{banding 1 }
+	{modesmooth 0 }
+	{modepower 2 }
+	{texpalette 1 }
+	{makemipmaps 0 }
+	{minclamp -10 }
+	{texwidth 8192 }
+	{texheight 8192 }
+	{cycleoffset 0 }
+	{modeinvert 0 }
+	{autocycle 0 }
+}
+
