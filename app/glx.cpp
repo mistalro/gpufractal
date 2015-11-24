@@ -129,6 +129,7 @@ int gl3attr[] =
         None
         };
 
+//m_ctx = glXCreateContextAttribsARB(m_dpy, fbcfg[0], NULL, true, gl3attr);
 m_ctx = glXCreateContextAttribsARB(m_dpy, fbcfg[0], NULL, true, gl3attr);
 
 if (!m_ctx)

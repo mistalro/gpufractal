@@ -35,6 +35,11 @@ CFractalParametersList m_savelist; // Replay file data
 CFractalParameters m_loadparameters; // Default parameters to read from file
 string m_textransfer;		// Color file
 bool   m_exitmode;              // Exit application flag
+float  m_angledelta;		// Rotation speed for angles
+float  m_transdelta;		// Translation speed
+float  m_powerdelta;		// Power delta
+float  m_zoomdelta;		// Zoom delta
+float  m_zoomwheeldelta;	// Zoom wheel delta
 
 CSystemParameters(void)
         {
@@ -45,6 +50,10 @@ CSystemParameters(void)
         m_savelist.clear();
 	m_textransfer = "";
         m_exitmode = false;
+	m_angledelta = 0.0001f * M_PI;
+	m_transdelta = 0.005f;
+	m_zoomdelta = 0.01f;
+	m_zoomwheeldelta = 0.05f;
         }
 
 inline void SetExitFlag(void)
@@ -64,7 +73,13 @@ CWindowParameters * CreateSetWindow(void)
 	{
 	CWindowParameters *window = CWindowSettings::CreateWindow();
 
-	window->setparameters( m_loadparameters, true);
+	window->setparameters( m_loadparameters, true );
+
+	window->setkeyboardrotationdelta( m_angledelta );
+	window->setkeyboardtransdelta( m_transdelta );
+	window->setzoomdelta( m_zoomdelta );
+	window->setzoomwheeldelta( m_zoomwheeldelta );
+	window->setpowerdelta( m_powerdelta);
 
 	return window;
 	}	

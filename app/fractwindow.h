@@ -155,12 +155,46 @@ pthread_mutexattr_t m_mutexattr;	// Mutex attributes
 pthread_mutex_t	   m_mutex;		// Mutex for editing parameters
 CTimerCPU	   m_timer;		// Timer for color cycling
 bool		   m_acceptupdates;	// Accept server updates
+float              m_angledelta;	// Delta for rotations
+float              m_angledeltafast;	// Delta for rotations (fast)
+float              m_transdelta;	// Delta for translation
+float		   m_transdeltafast;    // Delta for translations (fast)
+float		   m_powerdelta;	// Delta for power term
+float		   m_zoomwheelin;	// Delta for zooming in (mouse wheel)
+float		   m_zoomwheelout;	// Delta for zooming out (mouse wheel)
+float		   m_maxzoomout;	// Maximum zoom out
+float		   m_zoomoutdelta;		// Zoom out
+float		   m_zoomoutdeltafast;	// Zoom out fast
+float		   m_zoomindelta;		// Zoom in
+float              m_zoomindeltafast;	// Zoom in fast
+
+float		   m_maxbanding;        // Maximum color banding
+float		   m_minbanding;        // Minimum color banding
+int		   m_mintexsize;	// Minimum texture size
 
 CWindowParameters(void) 
 	{
 	m_rendershader = 0;
 	m_windowid = 0;
 	m_acceptupdates = true;
+	m_angledelta = M_PI * 0.0001f;
+	m_angledeltafast = m_angledelta * 10.0f;
+
+	m_transdelta = 0.0005f;
+	m_transdeltafast = m_transdelta * 10.0f;
+
+	m_powerdelta = 0.05f;
+	m_zoomwheelin = 0.95f;
+	m_zoomwheelout = 1.05f;
+	m_maxzoomout = 350.0f;
+	m_zoomoutdelta = 1.01f;
+	m_zoomoutdeltafast = 1.001f;
+	m_zoomindelta = 0.999f;
+	m_zoomindeltafast = 0.99f;
+
+	m_maxbanding = 128.0f;
+	m_minbanding = 1.0f;
+	m_mintexsize = 128;
 
 	pthread_mutexattr_init( &m_mutexattr);
 	pthread_mutex_init( &m_mutex, &m_mutexattr);
@@ -233,6 +267,37 @@ void savescreen(void);
 void savescreen(char *buffer);
 
 void savesuperscreen(unsigned int subx, unsigned int suby);
+
+inline void setkeyboardrotationdelta( float frotation )
+        {
+        m_angledelta = frotation;
+	m_angledeltafast = frotation * 10.0f;
+        }
+
+inline void setkeyboardtransdelta( float ftrans )
+	{
+	m_transdelta = ftrans;
+	m_transdeltafast = ftrans * 10.0f;
+	}
+
+inline void setpowerdelta( float fdelta)	
+	{
+	m_powerdelta = fdelta;
+	}
+
+inline void setzoomdelta(float fzoomfactor)
+	{
+	m_zoomindelta      = 1.0f - fzoomfactor * 0.1f;
+	m_zoomindeltafast  = 1.0f - fzoomfactor;
+	m_zoomoutdelta     = 1.0f + fzoomfactor * 0.1f;
+	m_zoomoutdeltafast = 1.0f + fzoomfactor;
+	}
+
+inline void setzoomwheeldelta(float fwheeldelta)
+	{
+        m_zoomwheelin = 1.0f - fwheeldelta;
+        m_zoomwheelout = 1.0f + fwheeldelta;
+	}
 };
 
 // --------------------------------------------------------------------------

@@ -52,5 +52,6 @@ if (g_sysparams.m_servermode)
 	pthread_create( &thread_server, &attrs_server, &process_serverthread, NULL);
 	}
 
+// Receive user commands
 process_clientthread(NULL);
 }

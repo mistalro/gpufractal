@@ -38,6 +38,10 @@ static const char *help_text =
 "\t-u             - Enable fullscreen mode\n"
 "\t-x<location>   - Position window at screen location eg. -x512x512\n"
 "\t-m             - Dump message packets\n"
+"\t-R             - Set rotation angle delta\n"
+"\t-T             - Set translation delta\n"
+"\t-Z             - Set zoom delta\n"
+"\t-W             - Set zoom wheel delta\n"
 "";
 
 // --------------------------------------------------------------------------
@@ -153,6 +157,22 @@ for (int idx = 1; idx < argc; idx++)
                         case 'x':
                                 sscanf( argv[idx]+2, "%dx%d", &m_winposx, &m_winposy);
                                 break;
+
+			case 'R':
+				sscanf( argv[idx]+2, "%f", &m_angledelta);
+				break;
+
+			case 'T':
+				sscanf( argv[idx]+2, "%f", &m_transdelta);
+				break;
+
+			case 'Z':
+				sscanf( argv[idx]+2, "%f", &m_zoomdelta);
+				break;
+
+			case 'W':
+				sscanf( argv[idx]+2, "%f", &m_zoomwheeldelta);
+				break;
 
                         default:
                                 break;

@@ -360,7 +360,7 @@ switch( event.type )
 
 			// Banding
 			case 56:
-				if (m_parameters.m_banding > 1.0f)
+				if (m_parameters.m_banding > m_minbanding)
 					{
 					m_parameters.m_banding -= 1.0f;
 					m_parameters.m_changebits |= CHANGEBIT_BANDING;
@@ -368,7 +368,7 @@ switch( event.type )
 				break;
 	
 			case 57:
-				if (m_parameters.m_banding < 128.0f)
+				if (m_parameters.m_banding < m_maxbanding)
 					{
 					m_parameters.m_banding += 1.0f;
 					m_parameters.m_changebits |= CHANGEBIT_BANDING;
@@ -418,8 +418,8 @@ switch( event.type )
 				break;
 
 			case 59:		
-				if (m_parameters.m_texwidth > 128 &&
-				    m_parameters.m_texheight > 128)
+				if (m_parameters.m_texwidth > m_mintexsize &&
+				    m_parameters.m_texheight > m_mintexsize)
 					{
 					resize_context( m_parameters.m_texwidth >> 1,
 							m_parameters.m_texheight >> 1 );
@@ -611,11 +611,13 @@ if (m_replay)
 
  	g_sysparams.m_savelist.CalculateFrame( m_parameters, m_replaypos );
 
+	// Replay mode disables input events, so return
 	return;
 	}
 
 if (m_left)
 	{
+	// Calculate transformed translation
 	float fsa, fca;
 
         sincosf( m_parameters.m_angle, &fsa, &fca );
@@ -626,8 +628,17 @@ if (m_left)
         float frx = fca * fdx - fsa * fdy;
         float fry = fsa * fdx + fca * fdy;
 
-        m_parameters.m_xcen -= frx * m_parameters.m_xwidth * 0.0005f;
-        m_parameters.m_ycen -= fry * m_parameters.m_ywidth * 0.0005f;
+	// Apply transformation
+	if (m_shiftleft)
+		{
+		m_parameters.m_xcen -= frx * m_parameters.m_xwidth * m_transdeltafast;
+        	m_parameters.m_ycen -= fry * m_parameters.m_ywidth * m_transdeltafast;
+		}
+	else
+		{
+        	m_parameters.m_xcen -= frx * m_parameters.m_xwidth * m_transdelta;
+        	m_parameters.m_ycen -= fry * m_parameters.m_ywidth * m_transdelta;
+		}
 
 	m_parameters.m_changebits |= CHANGEBIT_XCEN|CHANGEBIT_YCEN;
         }
@@ -636,11 +647,11 @@ if (m_keyrotatecw)
         {
 	if (m_shiftleft)
 		{
-    		m_parameters.m_angle += M_PI * 0.001f;
+    		m_parameters.m_angle += m_angledeltafast;
 		}
 	else
 		{
-    		m_parameters.m_angle += M_PI * 0.0001f;
+    		m_parameters.m_angle += m_angledelta;
 		}
 
 	m_parameters.m_changebits |= CHANGEBIT_ANGLE;
@@ -650,11 +661,11 @@ if (m_keyrotateccw)
         {
 	if (m_shiftleft)
 		{
-    		m_parameters.m_angle -= M_PI * 0.001f;
+    		m_parameters.m_angle -= m_angledeltafast;
 		}
 	else
 		{
-    		m_parameters.m_angle -= M_PI * 0.0001f;
+    		m_parameters.m_angle -= m_angledelta;
 		}
 
 	m_parameters.m_changebits |= CHANGEBIT_ANGLE;
@@ -664,19 +675,19 @@ if (m_wheelup)
         {
         if (m_right)
 		{
-		m_parameters.m_angle += M_PI / 30.0f;
+		m_parameters.m_angle += m_angledelta;
 		m_parameters.m_changebits |= CHANGEBIT_ANGLE;
                 }
         else
         if (m_middle)
                 {
-                m_parameters.m_power += 0.05f;
+                m_parameters.m_power += m_powerdelta;
 		m_parameters.m_changebits |= CHANGEBIT_POWER;
                 }
-        else
+        else	
                 {
-                m_parameters.m_xwidth *= 0.95f;
-                m_parameters.m_ywidth *= 0.95f;
+                m_parameters.m_xwidth *= m_zoomwheelin;
+                m_parameters.m_ywidth *= m_zoomwheelin;
 		m_parameters.m_changebits |= CHANGEBIT_XWIDTH|CHANGEBIT_YWIDTH;
                 }
         }
@@ -685,14 +696,14 @@ if (m_zoomin)
 	{
 	if (m_shiftleft)		
 		{
-        	m_parameters.m_xwidth *= 0.99f;
-        	m_parameters.m_ywidth *= 0.99f;
+        	m_parameters.m_xwidth *= m_zoomindeltafast;
+        	m_parameters.m_ywidth *= m_zoomindeltafast;
 		m_parameters.m_changebits |= CHANGEBIT_XWIDTH|CHANGEBIT_YWIDTH;
 		}
 	else
 		{
-        	m_parameters.m_xwidth *= 0.999f;
-        	m_parameters.m_ywidth *= 0.999f;
+        	m_parameters.m_xwidth *= m_zoomindelta;
+        	m_parameters.m_ywidth *= m_zoomindelta;
 		m_parameters.m_changebits |= CHANGEBIT_XWIDTH|CHANGEBIT_YWIDTH;
 		}
 	}
@@ -701,22 +712,22 @@ if (m_wheeldown)
         {
         if (m_right)
                 {
-                m_parameters.m_angle -= M_PI / 30.0f;
+                m_parameters.m_angle -= m_angledelta;
 		m_parameters.m_changebits |= CHANGEBIT_ANGLE;
                 }
         else
         if (m_middle)
                 {
-                m_parameters.m_power -= 0.05f;
+                m_parameters.m_power -= m_powerdelta;
                 }
         else
                 {
 		// Don't go beyond level of precision
-		if (m_parameters.m_xwidth < 350.0f &&
-		    m_parameters.m_ywidth < 350.0f )	
+		if (m_parameters.m_xwidth < m_maxzoomout &&
+		    m_parameters.m_ywidth < m_maxzoomout )	
 			{
-                	m_parameters.m_xwidth *= 1.05f;
-                	m_parameters.m_ywidth *= 1.05f;
+                	m_parameters.m_xwidth *= m_zoomwheelout;
+                	m_parameters.m_ywidth *= m_zoomwheelout;
 			m_parameters.m_changebits |= CHANGEBIT_XWIDTH|CHANGEBIT_YWIDTH;
 			}
                 }
@@ -725,18 +736,18 @@ if (m_wheeldown)
 if (m_zoomout)
 	{
 	// Don't go beyond level of precision
-	if (m_parameters.m_xwidth < 350.0f &&
-	    m_parameters.m_ywidth < 350.0f )	
+	if (m_parameters.m_xwidth < m_maxzoomout &&
+	    m_parameters.m_ywidth < m_maxzoomout )	
 		{
 		if (m_shiftleft)
 			{
-       			m_parameters.m_xwidth *= 1.01f;
-        		m_parameters.m_ywidth *= 1.01f;
+       			m_parameters.m_xwidth *= m_zoomoutdeltafast;
+        		m_parameters.m_ywidth *= m_zoomoutdeltafast;
 			}
 		else
 			{
-       			m_parameters.m_xwidth *= 1.001f;
-        		m_parameters.m_ywidth *= 1.001f;
+       			m_parameters.m_xwidth *= m_zoomoutdelta;
+        		m_parameters.m_ywidth *= m_zoomoutdelta;
 			}
 
 		m_parameters.m_changebits |= CHANGEBIT_XWIDTH|CHANGEBIT_YWIDTH;
@@ -783,8 +794,8 @@ if (m_arrowleft |m_arrowright |m_arrowup|m_arrowdown)
         float frx = fca * fdx - fsa * fdy;
         float fry = fsa * fdx + fca * fdy;
 
-        m_parameters.m_xcen += frx * m_parameters.m_xwidth * 0.0005f;
-        m_parameters.m_ycen += fry * m_parameters.m_ywidth * 0.0005f;
+        m_parameters.m_xcen += frx * m_parameters.m_xwidth * m_transdelta;
+        m_parameters.m_ycen += fry * m_parameters.m_ywidth * m_transdelta;
 
 	m_parameters.m_changebits |= CHANGEBIT_XCEN|CHANGEBIT_YCEN;
 	}
@@ -1054,6 +1065,9 @@ ASSERTGL();
 
 glTexImage2D(GL_TEXTURE_2D, 0, TEX_INTERNALFORMAT, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 ASSERTGL();
+
+//glSync();
+glFlush();
 
 return texid;
 }

@@ -5,7 +5,7 @@ FILESYSCOMMON=filesyscommon
 FILESYSASCII=filesysascii
 INCLUDEDIR = -I../../mathslib -I$(BASE)/$(TEXLIB) -I$(BASE)/$(FILESYSCOMMON) -I$(BASE)/$(FILESYSASCII)
 LIBDIR  =  -L$(BASE)/$(TEXLIB) -L$(BASE)/$(FILESYSASCII) -L$(BASE)/$(FILESYSCOMMON)
-LIBFILES = -lGL -lGLU -lrt -lX11 -l$(FILESYSASCII) -l$(FILESYSCOMMON) -lpthread
+LIBFILES = -ldl -lGL -lGLU -lrt -lX11 -l$(FILESYSASCII) -l$(FILESYSCOMMON) -lpthread
 LIBS= $(BASE)/$(TEXLIB)/$(TEXLIB).a 
 CXXFLAGS     = $(INCLUDEDIR) $(LIBDIR) -g -Wall -std=c++11 
 SUBDIRS = $(BASE)/$(TEXLIB) $(BASE)/$(FILESYSCOMMON) $(BASE)/$(FILESYSASCII)
@@ -60,7 +60,8 @@ OBJ = $(SRC:.cpp=.o)
 $(TARGET): all link1
 
 clean: $(SUBDIRS)
-	for i in $(SUBDIRS); do (cd $${i}; $(MAKE) $@1); done 
+	for i in $(SUBDIRS); do (cd $${i}; $(MAKE) $@1); done; 
+	rm $(OBJ) $(TARGET)
 
 all:
 	for i in $(SUBDIRS); do (cd $${i}; $(MAKE) $@1); done 
